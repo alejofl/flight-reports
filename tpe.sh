@@ -50,7 +50,7 @@ function clean () {
     rm countries.xml &> /dev/null
     rm flights.xml &> /dev/null
     rm flights_data.xml &> /dev/null
-    rm reporte.tex &> /dev/null
+    rm report.tex &> /dev/null
     exit 0
 }
 
