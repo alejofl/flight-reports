@@ -17,7 +17,7 @@ function run () {
         exit 2
     fi
 
-    java net.sf.saxon.Transform -s:flights_data.xml -xsl:generate_report.xsl qty="$1" -o:reporte.tex &> /dev/null
+    java net.sf.saxon.Transform -s:flights_data.xml -xsl:generate_report.xsl qty="$1" -o:report.tex &> /dev/null
     if [ $? -ne 0 ]
     then
         echo "\033[0;31mAn error was encountered. Make sure you have Java and Saxon parser installed.\n\033[0mRun '$0 help' for more information"
