@@ -1,27 +1,40 @@
-function run () {
-    echo "\033[0;33mDownloading data...\033[0m"
+function write_error () {
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><error><message>$1</message><code>script_error</code></error></root>" > flights.xml
+}
 
+function get_data () {
     curl -s https://airlabs.co/api/v9/airports.xml -d api_key="$AIRLABS_API_KEY" > airports.xml
     curl -s https://airlabs.co/api/v9/countries.xml -d api_key="$AIRLABS_API_KEY" > countries.xml
     curl -s https://airlabs.co/api/v9/flights.xml -d api_key="$AIRLABS_API_KEY" > flights.xml
-    if [ $? -ne 0 ]
+}
+
+function parser_error () {
+    echo "\033[0;31mAn error was encountered. Make sure you have Java and Saxon parser installed.\n\033[0mRun '$0 help' for more information"
+    exit 2
+}
+
+function run () {
+    echo "\033[0;33mDownloading data...\033[0m"
+
+    if [ $2 -eq 0 ]
     then
-        echo "\033[0;31mAn error was encountered. Make sure you have CURL installed and a stable internet connection.\n\033[0mRun '$0 help' for more information"
-        exit 2
+        get_data
+        if [ $? -ne 0 ]
+        then
+            write_error "Data collection failed."
+        fi
     fi
 
-    java net.sf.saxon.Query extract_data.xq > flights_data.xml &> /dev/null
+    java net.sf.saxon.Query extract_data.xq > flights_data.xml 2> /dev/null
     if [ $? -ne 0 ]
     then
-        echo "\033[0;31mAn error was encountered. Make sure you have Java and Saxon parser installed.\n\033[0mRun '$0 help' for more information"
-        exit 2
+        parser_error
     fi
 
     java net.sf.saxon.Transform -s:flights_data.xml -xsl:generate_report.xsl qty="$1" -o:report.tex &> /dev/null
     if [ $? -ne 0 ]
     then
-        echo "\033[0;31mAn error was encountered. Make sure you have Java and Saxon parser installed.\n\033[0mRun '$0 help' for more information"
-        exit 2
+        parser_error
     fi
 
     echo "\033[0;32mReport generated.\033[0m"
@@ -60,11 +73,11 @@ function is_num () {
 
 if [ $# -gt 1 ]
 then
-    echo "\033[0;31mAn error was encountered. More than two argument was supplied.\n\033[0mRun '$0 help' for more information"
-    exit 1
+    write_error "Too many arguments."
+    run 0 1
 elif [ $# -eq 0 ]
 then
-    run 0
+    run 0 0
 else
     if [ $1 = "help" ]
     then
@@ -74,9 +87,9 @@ else
         clean
     elif [ `is_num $1` ] && [ $1 -eq 0 ]
     then
-        run $1
+        run $1 0
     else
-        echo "\033[0;31mAn error was encountered. The argument supplied cannot be resolved.\n\033[0mRun '$0 help' for more information"
-        exit 1
+        write_error "Argument supplied is not a number."
+        run 0 1
     fi
 fi
