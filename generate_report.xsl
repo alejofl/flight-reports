@@ -26,7 +26,7 @@
     <xsl:template match="//error">
         <xsl:text>\begin{flushleft}&#xA;</xsl:text>
         <xsl:text>\color{red}&#xA;</xsl:text>
-        <xsl:text>\textbf{An error occurred:}&#xA;</xsl:text>
+        <xsl:text>\textbf{An error occurred: }</xsl:text>
         <xsl:value-of select="."/>
         <xsl:text>\end{flushleft}&#xA;</xsl:text>
     </xsl:template>
@@ -72,7 +72,7 @@
             </xsl:otherwise>
         </xsl:choose>
         <xsl:text>&amp;</xsl:text>
-        <xsl:value-of select="$data/departure_airport/name"/>, <xsl:value-of select="$data/departure_airport/country"/>
+        <xsl:value-of select="$data/departure_airport/name"/>
         <xsl:text>&amp;</xsl:text>
         <xsl:value-of select="$data/arrival_airport/name"/>
         <xsl:text>\\&#xA;</xsl:text>
