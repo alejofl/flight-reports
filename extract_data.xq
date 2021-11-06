@@ -56,8 +56,7 @@ declare function local:returnErrors() as node()* {
     let $airportError := doc("./airports.xml")//error/message/text()
     let $countryError := doc("./countries.xml")//error/message/text()
     let $flightError := doc("./flights.xml")//error/message/text()
-    let $defaultError := doc("./error_example.xml")//error/message/text()
-    let $errors := ($airportError, $countryError, $flightError, $defaultError)
+    let $errors := ($airportError, $countryError, $flightError)
     for $error in $errors
     return <error>{$error}</error>
 }; 
