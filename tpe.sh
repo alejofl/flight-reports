@@ -13,6 +13,12 @@ function parser_error () {
     exit 2
 }
 
+function start_program () {
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root></root>" > airports.xml
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root></root>" > countries.xml
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root></root>" > flights.xml
+}
+
 function run () {
     echo "\033[0;33mDownloading data...\033[0m"
 
@@ -85,9 +91,15 @@ else
     elif [ $1 = "clean" ]
     then
         clean
-    elif [ `is_num $1` ] && [ $1 -eq 0 ]
+    elif is_num $1;
     then
-        run $1 0
+        if [ $1 -gt 0 ]
+        then
+            run $1 0
+        else
+            write_error "Argument must be greater than zero."
+            run 0 1
+        fi
     else
         write_error "Argument supplied is not a number."
         run 0 1

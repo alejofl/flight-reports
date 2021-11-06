@@ -9,17 +9,24 @@
         <xsl:text>\usepackage{calc}&#xA;</xsl:text>
         <xsl:text>\usepackage[margin=1in]{geometry}&#xA;</xsl:text>
         <xsl:text>\usepackage[dvipsnames]{xcolor}&#xA;</xsl:text>
+        <xsl:text>\usepackage[T1]{fontenc}&#xA;</xsl:text>
         <xsl:text>\begin{document}&#xA;</xsl:text>
         <xsl:text>\title{Flight Report}&#xA;</xsl:text>
         <xsl:text>\author{XML Group 03}&#xA;</xsl:text>
         <xsl:text>\date{\today}&#xA;</xsl:text>
         <xsl:text>\maketitle&#xA;</xsl:text>
         <xsl:text>\newpage&#xA;</xsl:text>
-        <xsl:apply-templates select="//error"/>
         <xsl:variable name="entries" select="//flight"/>
-        <xsl:call-template name="flights">
-            <xsl:with-param name="flights" select="$entries"/>
-        </xsl:call-template>
+        <xsl:choose>
+            <xsl:when test="count($entries) &gt; 0">
+                <xsl:call-template name="flights">
+                    <xsl:with-param name="flights" select="$entries"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="//error"/>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:text>\end{document}</xsl:text>
     </xsl:template>
 
@@ -27,7 +34,7 @@
         <xsl:text>\begin{flushleft}&#xA;</xsl:text>
         <xsl:text>\color{red}&#xA;</xsl:text>
         <xsl:text>\textbf{An error occurred: }</xsl:text>
-        <xsl:value-of select="."/>
+        <xsl:text>\detokenize{</xsl:text><xsl:value-of select="."/><xsl:text>}</xsl:text>
         <xsl:text>\end{flushleft}&#xA;</xsl:text>
     </xsl:template>
 
