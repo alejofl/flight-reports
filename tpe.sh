@@ -37,6 +37,7 @@ function run () {
         get_data
         if [ $? -ne 0 ]
         then
+            start_program
             write_error "Data collection failed."
         fi
     fi
