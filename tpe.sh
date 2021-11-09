@@ -15,7 +15,7 @@ function get_data () {
 
 # Si hay algún error con los parsers, envía un mensaje a pantalla y termina el script.
 function parser_error () {
-    echo "\033[0;31mAn error was encountered. Make sure you have Java and Saxon parser installed.\n\033[0mRun '$0 help' for more information"
+    printf "\033[0;31mAn error was encountered. Make sure you have Java and Saxon parser installed.\n\033[0mRun '$0 help' for more information\n"
     exit 2
 }
 
@@ -30,7 +30,7 @@ function start_program () {
 # @param_1 => qty (cantidad de vuelos para el informe)
 # @param_2 => error (1 si hubo algún error anterior, 0 sino)
 function run () {
-    echo "\033[0;33mDownloading data...\033[0m"
+    printf "\033[0;33mDownloading data...\033[0m\n"
 
     if [ $2 -eq 0 ] # Si no hubo errores...
     then
@@ -55,26 +55,26 @@ function run () {
         parser_error
     fi
 
-    echo "\033[0;32mReport generated.\033[0m"
+    printf "\033[0;32mReport generated.\033[0m\n"
     exit 0
 }
 
 # Función de información. Imprime a pantalla la información acerca del script.
 function help () {
-    echo "\033[0;33mFlight Report Generator"
-    echo "\033[0mUsage:"
-    echo "\033[0;34m     $0 [quantity?] \033[0mDefalult behaviour. Will generate the report. Quantity argument is an optional number greater than zero. If supplied, report will be generated with that amount of flights."
-    echo "\033[0;34m     $0 clean \033[0mRemoves all files created by the script, the report included."
-    echo "\033[0;34m     $0 help \033[0mThis menu."
-    echo ""
-    echo "\033[0mImportant Information:"
-    echo "• You must have an environment variable called AIRLABS_API_KEY set with your API key for the service.\nUse \033[0;34m\$> export AIRLABS_API_KEY=\"your_key\"\033[0m"
-    echo "• In order to obtain the desired result, you must have an internet connection and the following packages installed:"
-    echo "     • Java"
-    echo "     • CURL"
-    echo "     • Saxon Parser"
-    echo ""
-    echo "By Axel Preiti, Mariano Agopian, Matias Rinaldo & Alejo Flores Lucey"
+    printf "\033[0;33mFlight Report Generator\n"
+    printf "\033[0mUsage:\n"
+    printf "\033[0;34m     $0 [quantity?] \033[0mDefalult behaviour. Will generate the report. Quantity argument is an optional number greater than zero. If supplied, report will be generated with that amount of flights.\n"
+    printf "\033[0;34m     $0 clean \033[0mRemoves all files created by the script, the report included.\n"
+    printf "\033[0;34m     $0 help \033[0mThis menu.\n"
+    printf "\n"
+    printf "\033[0mImportant Information:\n"
+    printf "• You must have an environment variable called AIRLABS_API_KEY set with your API key for the service.\nUse \033[0;34m\$> export AIRLABS_API_KEY=\"your_key\"\033[0m\n"
+    printf "• In order to obtain the desired result, you must have an internet connection and the following packages installed:\n"
+    printf "     • Java\n"
+    printf "     • CURL\n"
+    printf "     • Saxon Parser\n"
+    printf "\n"
+    printf "By Axel Preiti, Mariano Agopian, Matias Rinaldo & Alejo Flores Lucey\n"
 }
 
 # Función para obtener el estado previo a correr el script. Elimina todo lo creado por él.
