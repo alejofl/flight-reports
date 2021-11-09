@@ -54,7 +54,7 @@
         <!-- Para cada vuelo, me fijo si su posicion es menor o igual que $qty (cantidad de vuelos). Si es menor, hay que agregarlo => llamo al constructor de la fila. -->
         <!-- Si $qty es 0, entonces quiero que todos los vuelos estén en el reporte => siempre llamo al constructor -->
         <xsl:for-each select="$flights">
-            <xsl:if test="position() &lt;= $qty or $qty = 0">
+            <xsl:if test="position() &lt;= $qty or $qty = -1">
                 <xsl:call-template name="entry">
                     <xsl:with-param name="data" select="."/>
                 </xsl:call-template>

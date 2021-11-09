@@ -98,10 +98,10 @@ start_program
 if [ $# -gt 1 ] # Si se recibió más de un argumento...
 then
     write_error "Too many arguments."
-    run 0 1
+    run -1 1
 elif [ $# -eq 0 ] # Si no se reciben argumentos, significa que quiero todos los vuelos en el reporte.
 then
-    run 0 0
+    run -1 0
 else # Este caso debe ser que hay un solo argumento.
     if [ $1 = "help" ] # Si el argumento es "help", llamo a la función.
     then
@@ -111,15 +111,15 @@ else # Este caso debe ser que hay un solo argumento.
         clean
     elif is_num $1; # Si el argumento es un número...
     then
-        if [ $1 -gt 0 ] # Si el argumento es mayor que 0, llamo a los parsers con esa información.
+        if [ $1 -ge 0 ] # Si el argumento es mayor que 0, llamo a los parsers con esa información.
         then
             run $1 0
         else # Sino, el argumento es menor o igual que 0 => envío un error.
-            write_error "Argument must be greater than zero."
-            run 0 1
+            write_error "Argument must be greater or equal than zero."
+            run -1 1
         fi
     else # Si no es un número ni palabra reservada, no puedo resolver qué significa => envío un error.
         write_error "Argument supplied cannot be resolved."
-        run 0 1
+        run -1 1
     fi
 fi
